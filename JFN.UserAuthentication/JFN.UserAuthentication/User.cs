@@ -13,7 +13,7 @@ namespace JFN.User
         private readonly PID _userRef;
         private readonly ActorSystem _system;
 
-        public User(ActorSystem system, OneForOneStrategy strategy, string userDBPath)
+        public User(ActorSystem system, ISupervisorStrategy strategy, string userDBPath)
         {
             _system = system;
             var userProps = Props.FromProducer(() => new UserActor())
