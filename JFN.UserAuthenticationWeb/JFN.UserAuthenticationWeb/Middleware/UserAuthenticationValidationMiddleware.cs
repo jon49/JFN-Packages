@@ -53,7 +53,6 @@ namespace JFN.UserAuthenticationWeb.Middleware
             {
                 context.Response.Redirect("/login");
                 await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                await _next(context);
             }
         }
 
