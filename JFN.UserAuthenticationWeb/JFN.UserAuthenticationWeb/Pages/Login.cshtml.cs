@@ -52,10 +52,17 @@ namespace JFN.UserAuthenticationWeb.Pages
             return Page();
         }
 
-        public async Task OnGetLogout()
+        public async Task OnGetLogout(string? returnUrl = null)
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            HttpContext.Response.Redirect("/");
+            if (returnUrl is null)
+            {
+                HttpContext.Response.Redirect("/");
+            }
+            else
+            {
+                HttpContext.Response.Redirect(returnUrl);
+            }
         }
 
         private Task<LoggedInUser?> ValidateLogin(UserLogin? user)
