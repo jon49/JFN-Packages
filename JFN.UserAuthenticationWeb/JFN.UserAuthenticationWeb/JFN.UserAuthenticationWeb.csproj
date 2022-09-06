@@ -1,10 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-    <Version>1.1.0</Version>
+    <Version>2.0.0</Version>
+	<Title>Web auth helper</Title>
+    <Authors>$(AssemblyName),jon49</Authors>
+    <Description>Auth for me</Description>
+    <RepositoryUrl>https://github.com/jon49/JFN-Packages/tree/master/JFN.UserAuthenticationWeb</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,8 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="JFN.UserAuthentication" Version="1.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="5.0.10" />
+    <PackageReference Include="JFN.UserAuthentication" Version="2.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.8" />
   </ItemGroup>
 
 </Project>

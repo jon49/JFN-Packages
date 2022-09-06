@@ -16,10 +16,15 @@ namespace JFN.User.Actions
                 GetUserId x => ProcessGetUserId(context, x),
                 LoginUser x => ProcessLoginUser(context, x),
                 RegisterUser x => ProcessRegisterUser(context, x),
+                LogoutUser x => ProcessLogoutUser(context, x),
                 Initialize x => ProcessCreate(x),
                 _ => Task.CompletedTask,
             };
 
+        private async Task ProcessLogoutUser(IContext context, LogoutUser x)
+        {
+            context.Respond(await _action!.RemoveSessionId(x.Session));
+        }
 
         private Task ProcessCreate(Initialize x)
         {

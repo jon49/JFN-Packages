@@ -16,6 +16,8 @@
 
     public record GetUserId ( string Session );
 
+    public record LogoutUser ( string Session );
+
     public record Initialize( string UserDBPath );
 
 }

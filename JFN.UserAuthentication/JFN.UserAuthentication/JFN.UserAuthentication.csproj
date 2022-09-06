@@ -2,15 +2,20 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <LangVersion>9.0</LangVersion>
+    <LangVersion>10.0</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.1.1</Version>
+    <Version>2.0.2</Version>
+    <Title>Utitilities for auth</Title>
+    <Authors>$(AssemblyName),jon49</Authors>
+    <Description>Auth for me</Description>
+    <RepositoryUrl>https://github.com/jon49/JFN-Packages/tree/master/JFN.UserAuthentication</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="JFN.Utilities" Version="1.1.0" />
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="5.0.10" />
-    <PackageReference Include="Proto.Actor" Version="0.24.0" />
+    <PackageReference Include="JFN.Utilities" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.8" />
+    <PackageReference Include="Proto.Actor" Version="0.33.0" />
   </ItemGroup>
 
 </Project>

@@ -1,18 +1,17 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace JFN.Utilities
 {
     public static class Paths
     {
-        public static string GetAppDir(string directoryName)
+        public static string GetAppDir(string appDir)
         {
-            var mealPlannerDirectoryName = directoryName;
-            var localAppPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             var path =
-                string.IsNullOrWhiteSpace(localAppPath)
-                    ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".local", mealPlannerDirectoryName)
-                : Path.Combine(localAppPath, mealPlannerDirectoryName);
+                RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+                    ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), appDir)
+                : Path.Combine("/var/lib/", appDir);
             Directory.CreateDirectory(path);
             return path;
         }

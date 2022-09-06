@@ -19,10 +19,12 @@ namespace JFN.UserAuthenticationWeb.Pages
     {
         private readonly byte[] _salt;
         private readonly User.User _user;
+        private readonly string? _overrideReturnUrl;
 
         public LoginModel(IOptions<UserSettings> userSettings, User.User user)
         {
             _salt = Encoding.UTF8.GetBytes(userSettings.Value.Salt);
+            _overrideReturnUrl = userSettings.Value.OverrideReturnUrl;
             _user = user ?? throw new ArgumentNullException(nameof(user));
         }
 
@@ -42,6 +44,10 @@ namespace JFN.UserAuthenticationWeb.Pages
             {
                 await HttpUtil.Login(user, HttpContext);
 
+                if (_overrideReturnUrl is { } && Url.IsLocalUrl(returnUrl) && !returnUrl!.StartsWith("/app"))
+                {
+                    return Redirect($"{_overrideReturnUrl}?returnUrl={returnUrl}");
+                }
                 return
                     Url.IsLocalUrl(returnUrl) && returnUrl != "/"
                         ? Redirect(returnUrl)
@@ -57,7 +63,7 @@ namespace JFN.UserAuthenticationWeb.Pages
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             if (returnUrl is null)
             {
-                HttpContext.Response.Redirect("/");
+                HttpContext.Response.Redirect("/login");
             }
             else
             {

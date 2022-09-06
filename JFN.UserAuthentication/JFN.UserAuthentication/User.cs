@@ -30,5 +30,8 @@ namespace JFN.User
 
         public Task<long?> GetUserId(string session)
             => _system.Root.RequestAsync<long?>(_userRef, new GetUserId(session), TimeSpan.FromSeconds(2));
+
+        public Task LogoutUser(string session)
+            => _system.Root.RequestAsync<bool>(_userRef, new LogoutUser(session), TimeSpan.FromSeconds(2));
     }
 }

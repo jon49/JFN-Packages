@@ -53,6 +53,13 @@ namespace JFN.User.Actions
         public long? GetUserId(string session)
             => Sessions.GetOrAdd(session, s => sessionDB.GetUserId(session));
 
+        public async Task<bool> RemoveSessionId(string session)
+        {
+            Sessions.TryRemove(session, out var _);
+            await sessionDB.DeleteSession(session);
+            return true;
+        }
+
         public Task<LoggedInUser?> ProcessLoginUser(LoginUser loginUser)
             => CreateSession(userDB.ValidateUser(loginUser.Email, loginUser.EncryptedPassword));
 

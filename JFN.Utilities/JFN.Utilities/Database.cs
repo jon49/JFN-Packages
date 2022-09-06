@@ -103,7 +103,7 @@ namespace JFN.Utilities
             return (T)result;
         }
 
-        public static T ExecuteCommand<T>(
+        public static T? ExecuteCommand<T>(
             string connectionString,
             string sql,
             DBParams[] @params)
@@ -113,7 +113,7 @@ namespace JFN.Utilities
             return ExecuteCommand<T>(connection, sql, @params);
         }
 
-        public static T ExecuteCommand<T>(
+        public static T? ExecuteCommand<T>(
             SqliteConnection connection,
             string sql,
             params DBParams[] @params)
@@ -127,7 +127,7 @@ namespace JFN.Utilities
             }
             command.Prepare();
 
-            return (T)command.ExecuteScalar();
+            return (T?)command.ExecuteScalar();
         }
 
         public static void BulkInsert(
@@ -161,6 +161,47 @@ namespace JFN.Utilities
                     paramList[i].Value = val ?? DBNull.Value;
                 }
                 command.ExecuteNonQuery();
+            }
+
+            transaction.Commit();
+        }
+
+        public static void BulkInsertWithReturn(
+            SqliteConnection connection,
+            string sql,
+            Action<SqliteDataReader> map,
+            IEnumerable<DBParams[]> @params)
+        {
+            if (!@params.Any())
+            {
+                return;
+            }
+
+            using var transaction = connection.BeginTransaction();
+            using var command = connection.CreateCommand();
+            command.CommandText = sql;
+
+            var paramList = @params.First().Select(x =>
+            {
+                var sqliteParam = command.CreateParameter();
+                sqliteParam.ParameterName = x.Name;
+                command.Parameters.Add(sqliteParam);
+                return sqliteParam;
+            }).ToList();
+
+            var length = paramList.Count();
+            foreach (var p in @params)
+            {
+                for (int i = 0; i < length; i++)
+                {
+                    var val = p[i].Value;
+                    paramList[i].Value = val ?? DBNull.Value;
+                }
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    map(reader);
+                }
             }
 
             transaction.Commit();
